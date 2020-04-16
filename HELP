@@ -1,0 +1,25 @@
+SIIT -- Simple I3 Installation Tool (Version 1)
+
+ SIIT is a tool to automate the installation of the i3 window manager for
+Debian and Ubuntu based systems.
+
+Commands:
+ 
+    siit = Complete custom i3wm installation.
+
+    Running siit with no options will install i3wm along with a custom
+selection of packages that aim to make the system ready to use with minimal
+, if any configuration.
+
+    siit --minimal = Install just i3 and X.
+
+    Using the minimal option just installs i3 and the X server. The bare essentials
+to make i3 work. The user can then further configure the system to their needs.
+
+    siit --help = Shows this help page.
+
+    siit --list = Displays a list of all the software included in the full install.
+
+By Adrian Nunez (GNU/General Public License version 2.0)
+
+

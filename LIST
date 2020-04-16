@@ -1,0 +1,40 @@
+Below is a list of the software included in the full install, you will not have this software pre-installed in your system if using 
+the minimal install. This custom app selection makes it really easy to get started with I3 with minimal configuration.
+
+	- xorg 
+	- xserver-xorg 
+	- lightdm 
+	- lightdm-gtk-greeter 
+	- lightdm-gtk-greeter-settings 
+	- ubuntu-drivers-common 
+	- mesa-utils 
+	- mesa-utils-extra 
+	- compton 
+	- thunar 
+	- wicd 
+	- feh 
+	- i3 
+	- intel-microcode 
+	- firefox 
+	- lxappearance 
+	- gtk-chtheme 
+	- qt4-qtconfig 
+	- xfce4-terminal 
+	- unzip 
+	- lm-sensors 
+	- pulseaudio 
+	- pnmixer 
+	- pavumeter 
+	- xbacklight 
+	- imagemagick 
+	- upower 
+	- gedit 
+	- transmission 
+	- software-properties-common 
+	- openssh-server 
+	- arc-theme 
+	- snapd 
+	- i3blocks 
+	- gnome-calculator 
+	- engrampa 
+        - vlc

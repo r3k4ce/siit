@@ -1,0 +1,105 @@
+#!/bin/bash
+
+# This script can be used to used to install the I3 window manager on Ubuntu.
+# It has been tested to work on Ubuntu 18.04 minimal, but should also work on any Debian or Ubuntu based system.
+
+# Check if user is online.
+online_check () {
+
+    WEBCHEK=$(ping -c1 google.com)
+    if [[ ${?} -ne "0" ]]
+    then
+        echo "You are not online."
+        echo "Please connect to the internet and try again."
+    exit 1
+    fi
+
+}
+
+# Update the system.
+sys_update () {
+
+    echo "SIIT: Updating The System."
+    sudo apt update -y
+    sudo apt upgrade -y
+    sudo apt dist-upgrade -y
+    echo "--------------------"
+    echo "- Update Complete! -"
+    echo "--------------------"
+
+}
+
+# Firewall configuration.
+firewall_setup () {
+
+    echo "SIIT: Configuring Firewall."
+    sudo apt install ufw -y
+    sudo ufw default deny incoming 
+    sudo ufw default allow outgoing 
+    sudo ufw enable 
+    echo "------------------------"
+    echo "- Firewall configured! -"
+    echo "------------------------"
+
+}
+
+# Install custom core packages.
+i3_install () {
+
+    echo "SIIT: Full Install"
+    sudo apt install xorg i3 lightdm lightdm-gtk-greeter git lightdm-gtk-greeter-settings ubuntu-drivers-common mesa-utils mesa-utils-extra compton thunar feh intel-microcode lxappearance gtk-chtheme qt4-qtconfig xfce4-terminal cmus wicd unzip lm-sensors pulseaudio moka-icon-theme chromium-browser atril kazam libreoffice focuswriter audacity ristretto htop geary build-essential pnmixer pavumeter xbacklight imagemagick upower transmission software-properties-common openssh-server arc-theme i3blocks gnome-calculator engrampa vlc vim gedit scrot -y
+    sudo add-apt-repository ppa:dyatlov-igor/la-capitaine -y
+    sudo add-apt-repository ppa:otto-kesselgulasch/gimp -y
+    sudo add-apt-repository ppa:mzahniser/endless-sky -y
+    sudo apt install la-capitaine-cursor-theme gimp endless-sky -y
+    echo "-----------------------------"
+    echo " - Core packages installed! -"
+    echo "-----------------------------"
+
+}
+
+# Create standard directory structure for ~.
+home_dir_structure () {
+
+    mkdir ~/Documents ~/Downloads ~/Pictures ~/Music ~/Desktop
+    mkdir -p ~/Pictures/Wallpapers
+
+}
+
+# Make post install script executable.
+execmod_postsh () {
+
+    sudo chmod 755 siitconfig
+    echo "After the system reboots, navigate to siit directory and enter './siitconfig' to invoke the script."
+
+}
+
+
+# Clean up the system and update database.
+cleanup_updb () {
+
+    sudo apt autoremove -y
+    sudo apt autoclean -y
+    sudo updatedb
+}
+
+# Essential functions that are executed whenever the script is invoked.
+main_function () {
+
+    online_check
+    home_dir_structure
+    sys_update
+    firewall_setup
+    i3_install
+    execmod_postsh
+    cleanup_updb
+    echo "-------------"
+    echo "- Finished! -"
+    echo "-------------"
+
+}
+
+# The script now begins its execution.
+main_function $@
+sudo shutdown -r now
+

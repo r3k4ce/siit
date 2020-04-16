@@ -1,0 +1,207 @@
+#!/bin/bash
+
+# This exits the script if BASH encounters any errors.
+
+set -e
+
+# Here are listed all of the functions that will be utilized by the script.
+
+# UPDATE (Executes without any options.)
+
+update () {
+
+	echo "Starting system update..."
+   	sudo apt update -y
+   	sudo apt upgrade -y
+   	echo "Cleaning up..."
+   	sudo apt autoremove -y
+   	sudo apt autoclean -y
+   	sudo apt clean -y
+   	echo "Updating locate database."
+   	sudo updatedb
+   	echo "--------------------"
+   	echo "- Update Complete! -"
+   	echo "--------------------"
+   	exit
+
+}
+
+# SEARCH (Executes with -s option.)
+
+search () {
+    
+   	shift
+   	echo "Searching repositories..."
+   	apt search "${@}"
+   	exit
+    
+}  
+
+# SHOW (Executes with -S option.)
+
+show () {
+
+   	shift
+   	echo "Displaying package info..."
+   	apt show "${@}"
+   	exit
+
+}
+
+# LIST (Executes with -l option.)
+
+list () {
+
+    	echo "Listing installed packages..."
+   	dpkg-query -l
+   	exit
+    
+}
+
+# INSTALL (Executes with -i option.)
+
+install_pkg () {
+   
+   	shift
+   	echo "Starting installation of package/s..."
+   	sudo apt install "${@}"
+   	exit
+    
+}
+
+# INSTALL DEB (Executes with the -d option.)
+
+deb_install () {
+	shift
+	if [[ "${@}" == "" ]]
+	then
+        	echo "UP Error: You must supply a .deb package when using the -d option. Try 'upm -d package_name.deb'."
+		exit 1
+	fi
+	echo "Installing .deb package..."
+	sudo dpkg -i "${@}"
+	exit
+}
+
+# REMOVE (Executes with -r option.)
+
+remove () {
+
+  	shift
+   	echo "Removing package/s..."
+   	sudo apt autoremove --purge "${@}"
+   	exit
+    
+}
+
+# HELP (Executes with -h option.)
+
+help_up () {
+
+   	cat << _EOF_
+    
+This script is based on the up utility by Joe Collins of EzeeLinux (https://github.com/EzeeLinux/up-debian_ubuntu_update_tool). 
+It adds additional functionality to the original script, including basic package management.
+
+Package features:
+
+    - Updating, upgrading and cleaning up the system is done by invoking 'up' with no options. 
+    
+    - Options have been shortened to one letter to reduce the amount of typing.
+    
+    - Easy management of software packages via apt and dpkg.
+    
+    - Additional functionality includes:
+    
+        -- Search repository for packages.
+        
+        -- List package information.
+        
+        -- List packages installed in the system.
+        
+        -- Install and remove packages utilizing apt and dpkg as the back end.
+        
+    USAGE
+        
+        up = Updates, upgrades, removes cached and orphaned packages.
+        
+        up -s package_name = Search repositories for specific package.
+        
+        up -S package_name/s = Display information for requested package/s.
+        
+        up -l = Show all packages installed in your system.
+        
+        up -i package_name/s = Install package/s.
+	
+	up -d package_name.deb = Install package from .deb file.
+        
+        up -r package_name/s = Remove package/s.
+        
+        up -h = Show this help file.
+        
+This software is licensed under the GNU General Public License v2.0.
+
+_EOF_
+    
+    exit
+    
+}
+
+# Now the script begins executing.
+
+# EXECUTION
+
+# Display utility name.
+
+echo "UP -- Debian/Ubuntu Update and Package Management Tool" 
+
+# The following if statements test if the user entered any options when invoking the command.
+
+if [[ "${1}" == "-s" ]]
+then
+   	search ${@}
+fi
+
+if [[ "${1}" == "-S" ]]
+then
+   	show ${@}
+fi
+
+if [[ "${1}" == "-l" ]]
+then
+   	list ${@}
+fi
+
+if [[ "${1}" == "-i" ]]
+then
+   	install_pkg ${@}
+fi
+
+if [[ "${1}" == "-r" ]]
+then
+   	remove ${@}
+fi
+
+if [[ "${1}" == "-h" ]]
+then
+	help_up ${@}
+fi    
+
+if [[ "${1}" == "-d" ]]
+then    
+        deb_install ${@}
+fi      
+    
+# Check for invalid arguments.
+
+if  [[ -n "$1"  ]]
+then
+    echo "UP Error: Invalid argument. Try 'upm -h' for more info." >&2
+    exit 1
+fi
+
+# The function called below executes if there are no options provided.
+
+update
+
+exit

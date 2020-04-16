@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Fetching and moving configuration files, and wallpaper.
+# This script will not work if you installed the minimal package.
+# It needs the software included in the full install.
+
+# Exists the script in case it encounters an error.
+
+set -e
+
+# Begin configuration.
+
+echo "SIITconfig: Configuring I3"
+USERNAME=$(id -un)
+sudo cp config i3blocks.conf ~/.config/i3/
+sudo cp xorg.conf /etc/X11/
+sudo cp *.jpg *.png ~/Pictures/Wallpapers/
+sudo cp lightdm-gtk-greeter.conf /etc/lightdm/
+sudo cp up i3lock_config.sh youtube-dl /usr/local/bin
+sudo cp dmenu_* /usr/local/bin
+sudo chmod 755 /usr/local/bin/dmenu_*
+sudo chmod 755 /usr/local/bin/up
+sudo chmod 755 /usr/local/bin/i3lock_config.sh
+sudo sed -i 's/$USER/'${USERNAME}'/' /etc/lightdm/lightdm-gtk-greeter.conf
+echo "--------------------------"
+echo "-Configuration Finished! -"
+echo "--------------------------"
+echo "Now rebooting..."
+sleep 2
+sudo shutdown -r now
